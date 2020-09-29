@@ -1,0 +1,114 @@
+<canvas id="myCanvas"
+        width="800"
+        height="500"
+        style="border:2px solid blue" >              
+        
+        </canvas>
+
+
+<img id="mrMap" 
+     style="width:0;height:0;"
+     src="https://raw.githubusercontent.com/xianfuzheng/codepen/master/assets/images/map_asquith.png"
+     />
+	
+
+<img id="mrsMouse"
+     style="width:0;height:0;"
+     src="https://raw.githubusercontent.com/xianfuzheng/codepen/master/assets/images/red_shrew.png"/>
+
+
+<script>
+ 
+  var canvas = document.getElementById("myCanvas");
+  var ctx = myCanvas.getContext("2d");
+  var mrMap =  document.getElementById("mrMap");0
+  var mouse =  document.getElementById("mrsMouse");                          
+
+  
+  var startX = 90;
+  var startY = 390;
+  
+  var endX = 490;
+  var endY = 200;
+  
+  var mouseX = startX;
+  var mouseY = startY;
+  
+  var detX = 1;
+  var detY = 0;
+  
+  // moving or falling
+  var mouseState = "moving";
+  var mouseFrame = 0;
+  
+  
+  function drawScene() {
+    
+    if ( mouseState == "moving") {
+      var distX = endX - startX;
+      var distY = endY - startY;
+
+      var w = distY / distX;
+
+      detY = detX * w;
+
+      mouseX = mouseX + detX
+      mouseY = mouseY + detY
+
+      detX = detX  + 0.5
+    }
+    
+    if (mouseState == "falling" ) {
+    	
+      mouseFrame = mouseFrame + 1;
+      
+      if (mouseFrame > 6) {
+      	mouseState = "end";
+      }
+      
+    }
+
+    
+    if(mouseX > endX) {
+     	detX = 0; 
+      mouseState = "falling";
+    }
+   
+    
+    ctx.clearRect(0,0,800,500);
+    
+    ctx.drawImage( mrMap, 
+                0, //x
+                0, //y
+                800, //width
+                500//height
+               );
+    
+    if( mouseState == "moving") {
+    	 ctx.drawImage( mrsMouse, 
+                0,0, 45, 60, // rect from original image
+                mouseX, mouseY, 45, 60 // rect in canvas
+               );
+    
+    
+    }
+    
+    if(mouseState == "falling") {
+      ctx.drawImage( mrsMouse, 
+                mouseFrame * 45 ,0, 45, 60, // rect from original image
+                mouseX, mouseY, 45, 60 // rect in canvas
+               );
+    }
+    
+    if(mouseState == "end") {
+    	// end of mouse
+    }
+    
+   
+  }
+  
+  
+  setInterval(drawScene, 100);
+  
+  
+</script>
