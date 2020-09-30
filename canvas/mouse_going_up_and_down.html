@@ -1,0 +1,118 @@
+<canvas id="myCanvas" width="800" height="480" style="border:2px solid blue">
+
+</canvas>
+<img id="mrMap" style="width:0;height:0;"
+    src="https://raw.githubusercontent.com/xianfuzheng/codepen/master/assets/images/bg_g1.jpg" />
+
+
+<img id="mrsMouse" style="width:0;height:0;"
+    src="https://raw.githubusercontent.com/xianfuzheng/codepen/master/assets/images/red_shrew.png" />
+
+<script>
+    var canvas = document.getElementById("myCanvas");
+    var ctx = myCanvas.getContext("2d");
+
+    var mrMap = document.getElementById("mrMap");
+    var mouse = document.getElementById("mrsMouse");
+
+    var mouseX = 333;
+    var mouseY = 162;
+
+    // mouse state:
+    // 	hiding - hiding underGround - 2 seconds
+    //		goingUp - animation of going up
+    //		surface - visable - 1 second
+    //		goingDown -animation of going down
+
+    var mouseState = "hiding";
+    var timer = 0;
+    var timer2 = 0;
+    var mouseFrame = 5;
+    var mouseFrame2 = 0;
+
+
+    function drawScene() {
+
+        if (mouseState == "hiding") {
+
+            timer = timer + 1;
+            if (timer > 20) {
+                mouseState = "goingUp"
+            }
+
+        }
+
+        if (mouseState == "goingUp") {
+            mouseFrame = mouseFrame - 1;
+
+            if (mouseFrame < 0) {
+                mouseState = "surface";
+            }
+
+        }
+
+        if (mouseState == "surface") {
+
+            timer2 = timer2 + 1;
+            if (timer2 > 10) {
+                mouseState = "goingDown";
+            }
+        }
+
+        if (mouseState == "goingDown") {
+
+            mouseFrame2 = mouseFrame2 +1;
+            if(mouseFrame2 > 6 ) {
+                mouseState = "end";
+            }
+
+        }
+
+        ctx.clearRect(0, 0, 800, 500);
+
+        ctx.drawImage(mrMap,
+            0, 0, 800, 480,
+
+            0, //x
+            0, //y
+            800, //width
+            480 //height
+        );
+
+
+        if (mouseState == "hiding") {
+            // draw the mouse in hiding state
+            // do nothing
+        }
+
+        if (mouseState == "goingUp") {
+
+            ctx.drawImage(mrsMouse,
+                mouseFrame * 45, 0, 45, 60, // rect from original image
+                mouseX, mouseY, 45, 60 // rect in canvas
+            )
+
+        }
+
+        if (mouseState == "surface") {
+            ctx.drawImage(mrsMouse,
+                0, 0, 45, 60, // rect from original image
+                mouseX, mouseY, 45, 60 // rect in canvas
+            )
+
+        }
+
+        if (mouseState == "goingDown") {
+
+            ctx.drawImage(mrsMouse,
+                mouseFrame2 * 45, 0, 45, 60, // rect from original image
+                mouseX, mouseY, 45, 60 // rect in canvas
+            )
+        }
+
+
+    }
+
+
+    setInterval(drawScene, 100);
+</script>
