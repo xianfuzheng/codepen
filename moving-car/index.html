@@ -1,0 +1,123 @@
+<!-- main room
+right: 39
+    left: 37
+up: 38
+down: 40
+
+Limit the car into
+
+x between 50 to 200
+y between 60 to 150
+    -->
+
+
+    <canvas id="myCanvas" width="600" height="300"  style="border:1px solid #000000;"></canvas>
+
+    <div style="display:none;">
+    
+    
+        <img id="carImage"
+             src ="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-UJLELBgL92h5fH20vzhdUC_yYH6lWeqEkr9wVFXvy-CaqIg&s"
+             width="100"height="50">
+    
+    </div>
+    
+    <script>
+    
+      var c = document.getElementById("myCanvas");
+      var ctx = c.getContext("2d");
+    
+      var carImage = document.getElementById('carImage');
+    
+      var scoreImage = document.getElementById('scoreImage');
+    
+      function driveCar() {
+        car.x = car.x + 1;
+    
+        drawMainScene();
+      }
+    
+      var car = {
+        x: 0,
+        y: 115,
+        w: 50,
+        h: 20,
+        direction: "right",
+        draw: function(ctx) {
+          ctx.drawImage(carImage, this.x, this.y, this.w, this.h)
+        },
+        drive: function() {
+    
+          setInterval(driveCar, 10);
+        }
+      }
+    
+    
+      function drawMainScene() {
+        ctx.clearRect(0,0, 600,600);
+    
+    
+    
+        ctx.fillStyle = "grey";
+        ctx.fillRect(0, 90, 600, 10);
+    
+        ctx.fillStyle = "lightgrey";
+        ctx.fillRect(0, 100, 600, 50);
+    
+        ctx.fillStyle = "grey";
+        ctx.fillRect(0, 150, 600, 10);
+    
+        car.draw(ctx);
+    
+      }
+    
+      drawMainScene();
+    
+      // a (left) s(down) d(rigt) w(up)
+      window.onkeyup = function(event) {
+        var key = event.keyCode;
+    
+        //alert(key);
+        if (key == 68) {
+    
+          car.direction = "right";
+          car.drive();
+          return;
+        }
+    
+        if (key == 65) {
+          car.direction = "left";
+          car.x = car.x - 10;
+        }
+    
+        if(key == 83) {
+          car.direction = "down";
+          car.y = car.y + 10;
+        }
+    
+        if( key == 87) {
+          car.direction = "up";
+          car.y = car.y - 10;
+        }
+    
+        if ( car.y < 100) {
+          car.y = 100;
+        }
+        if ( car.y > 130) {
+          car.y = 130;
+        }
+        if ( car.x > 550) {
+          car.x = 550;
+        }
+        if ( car.x < 0) {
+          car.x = 0;
+        }
+    
+        drawMainScene();
+      }
+    
+    
+    
+    </script>
+    
+    

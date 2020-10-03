@@ -1,0 +1,247 @@
+<!--Jerry-->
+
+<html>
+
+<head>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js">
+    </script>
+
+    <style>
+        .stuff {
+            width: 150px;
+        }
+    </style>
+
+</head>
+
+<body style="padding:20px">
+<img style="width:200px"src="https://images-fe.ssl-images-amazon.com/images/G/35/gateway/desktop/dashboard/gw_dashcard_logo_379x304._SY304_CB426188433_.jpg">
+
+<h3>Best Selling Items That You Need!</h3>
+
+
+
+
+
+<div id="productRow"class="row">
+
+
+</div>
+
+
+
+
+
+<!-- table framework-->
+<table class="table table-primary">
+
+    <thead>
+    <tr>
+        <th>Name </th>
+
+        <th>Price</th>
+        <th>Quantity </th>
+        <th>Total Price </th>
+    </tr>
+    </thead>
+
+    <tbody id="table">
+
+    </tbody>
+
+</table>
+
+<div class="row">
+    <h4>TAX: $</h4>
+    <h4 id="taxAmount"></h4>
+</div>
+
+<div class="row">
+    <h4>Total Price: $</h4>
+    <h4 id="totalAmount"></h4>
+</div>
+
+<script>
+  var item1 = {
+    name: "Absolut Blue Bottling Note Vodka 700ml",
+    price: 30,
+    quantity : 0,
+    imgUrl: "https://shortysliquor.com.au/media/catalog/product/cache/2fcc3329aef4183c8e06230d7e06f8f3/4/2/4200_4.png"
+
+  };
+  var item2 = {
+    name: "N95 Respirators Mask 5pk",
+    price: 20,
+    quantity : 0,
+    imgUrl: "https://www.fda.gov/files/n95_respirator.jpg"
+  };
+  var item3 = {
+    name: "1 Days Rations For 1 Adult",
+    price: 25,
+    quantity : 0,
+    imgUrl:"https://qph.fs.quoracdn.net/main-qimg-defe853a972d7e7f83966c361d7b8698"
+  };
+  var item4 = {
+    name: "Animal Crossing New Horizon",
+    price: 75,
+    quantity : 0,
+    imgUrl:"https://c1-ebgames.eb-cdn.com.au/merchandising/images/packshots/5b73b7d4079042898eaa240d5a075229_Large.jpg"
+  };
+  var item5 = {
+    name: "Nintendo Switch",
+    price: 445,
+    quantity : 0,
+    imgUrl:"https://cdn.shopify.com/s/files/1/0024/9803/5810/products/383553-Product-0-I_large.jpg"
+  };
+  var item6 = {
+    name: "Toilet Tissue 400 Sheets 48 Rolls",
+    price: 15,
+    quantity : 0,
+    imgUrl:"https://www.suppleyes.com.au/img-data/2019/09/Toilet-Tissue-2-ply-400-Sheet-Recycled-48-Rolls.jpg"
+  };
+
+
+  function addNewProduct ( imgUrl,price,name )  {
+
+
+    $img = $("<img class='stuff' src='" + imgUrl + "'>");
+
+    $button = $(`<button type="button" class="btn btn-outline-dark" onclick="buy('${price}')">${name}</button>`);
+
+
+    $div1 = $ ("<div></div>");
+    $div2 = $ ("<div></div>");
+    $div1.append ($img)
+    $div2.append ($button)
+
+
+    $productDiv= $ ("<div></div>");
+    $productDiv.append($div1)
+    $productDiv.append($div2)
+
+    $('#productRow').append($productDiv);
+
+
+  }
+
+
+  var items = [item1, item2, item3, item4, item5, item6];
+
+  for ( i=0; i< items.length; i=i+1) {
+    var item = items[i];
+    addNewProduct(item.imgUrl, item.name, item.price);
+  }
+
+
+
+</script>
+
+
+
+<script>
+  var item1 = {
+    name: "Absolut Blue Bottling Note Vodka 700ml",
+    price: 30,
+    quantity : 0
+
+  };
+
+  var item2 = {
+    name: "N95 Respirators Mask 5pk",
+    price: 20,
+    quantity : 0
+  };
+  var item3 = {
+    name: "1 Days Rations For 1 Adult",
+    price: 25,
+    quantity : 0
+  };
+  var item4 = {
+    name: "Animal Crossing New Horizon",
+    price: 75,
+    quantity : 0
+  };
+  var item5 = {
+    name: "Nintendo Switch",
+    price: 445,
+    quantity : 0
+
+  };
+  var item6 = {
+    name: "Toilet Tissue 400 Sheets 48 Rolls",
+    price: 15,
+    quantity : 0
+  };
+
+  var items = [item1, item2, item3, item4, item5, item6];
+
+  var itemInfomationDict = [];
+  itemInfomationDict['Absolut Blue Bottling Note Vodka 700ml'] = item1;
+  itemInfomationDict['N95 Respirators Mask 5pk'] = item2;
+  itemInfomationDict['1 Days Rations For 1 Adult'] = item3;
+  itemInfomationDict['Animal Crossing New Horizon'] = item4;
+  itemInfomationDict['Nintendo Switch'] = item5;
+  itemInfomationDict['Toilet Tissue 400 Sheets 48 Rolls'] = item6
+
+
+  var taxAmount = 0;
+  var totalAmount = 0;
+
+  function buy(itemName) {
+
+    var name = itemInfomationDict[itemName].name;
+    var price = itemInfomationDict[itemName].price;
+
+
+    itemInfomationDict[itemName].quantity ++;
+
+    $("#table").empty();
+    taxAmount = 0;
+    totalAmount = 0;
+
+    for (i = 0; i< items.length; i = i+1 ) {
+
+      var item = items[i];
+      if(item.quantity>0) {
+        addNewRow(item.name, item.price,item.quantity);
+      }
+    }
+
+  }
+
+  function addNewRow(name, price , quantity) {
+
+    var currentTax = quantity * price * 0.09;
+    taxAmount = taxAmount + currentTax;
+    totalAmount = totalAmount + quantity * price + currentTax;
+
+
+
+    $('#taxAmount').text(taxAmount);
+    $('#totalAmount').text(totalAmount);
+
+    var row = $('<tr></tr>');
+    var col1 = $('<td></td>');
+    var col2 = $('<td></td>');
+    var col3 = $('<td></td>');
+    var col4 = $('<td></td>')
+
+    row.append(col1);
+    row.append(col2);
+    row.append(col3);
+    row.append(col4);
+
+    col1.text(name);
+    col2.text("$"+  price);
+    col3.text(quantity);
+    col4.text(quantity *  price);
+
+
+    $('#table').append(row);
+  }
+</script>
+</body>

@@ -1,9 +1,7 @@
-## Welcome to Jerry's home
+## Web pages
+* [Shopping!](https://xianfuzheng.github.io/jerry/shopping-cart/index.html)
 
-You can use the [editor on GitHub](https://github.com/xianfuzheng/codepen/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Games
+* [A Jumping Moon!](https://xianfuzheng.github.io/jerry/moon/index.html)
+* [Move the car!](https://xianfuzheng.github.io/jerry/moving-car/index.html)
+* [Hit the mouse!](https://xianfuzheng.github.io/jerry/mouse/index.html)

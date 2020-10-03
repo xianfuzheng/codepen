@@ -1,0 +1,123 @@
+
+<canvas id="myCanvas"
+width="800"
+height="500"
+style="border:2px solid blue" >
+
+</canvas>
+
+<img id="img"
+src="https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_960_720.jpg"
+style="width: 0px; height: 0px;"
+/>
+
+<img id="moon"
+src=" http://pngimg.com/uploads/moon/moon_PNG52.png"
+style="width: 0px; height: 0px;"
+/>
+
+
+<script language="javascript">
+
+var canvas = document.getElementById("myCanvas");
+var ctx = myCanvas.getContext("2d");
+
+var moonX = 150;
+var detX = 30;
+
+var xLeft = true;
+
+var moonY = 0;
+var detY = 0;
+
+var yUp = false;
+
+function drawMoon() {
+
+if(xLeft) {
+moonX = moonX - detX;
+} else {
+moonX = moonX + detX;
+}
+
+if ( moonX < 0) {
+xLeft = false;
+}
+
+if ( moonX > 800) {
+xLeft = true;
+}
+
+if( xLeft ) {
+
+if( moonX > 400) {
+// 2
+  detX = detX + 2;
+} else {
+// 1
+  detX = detX - 2;
+}
+
+} else {
+
+
+if( moonX > 400) {
+// 4
+  detX = detX - 2;
+
+} else {
+
+ // 3
+   detX =  detX + 2;
+}
+
+}
+
+if ( yUp ) {
+// going up
+moonY = moonY - detY;
+detY = detY - 1;
+
+if( moonY < 0) {
+      yUp = false;
+}
+
+} else {
+// going down
+
+moonY = moonY + detY;
+detY = detY +1;
+
+if ( moonY > 350) {
+  yUp = true;
+}
+}
+
+ctx.clearRect(0,0,800,500);
+
+
+var myImg = document.getElementById("img");
+ctx.drawImage(myImg,
+        0, ///x
+         0, // y
+        800, // width
+        500 //height
+       );
+
+  var myImg = document.getElementById("moon");
+  ctx.drawImage(myImg,
+        moonX , ///x
+        150, // y
+        150, // width
+        150 //height
+       );
+
+setTimeout(drawMoon, 100);
+}
+
+
+setTimeout(drawMoon, 100);
+
+
+</script>
+
