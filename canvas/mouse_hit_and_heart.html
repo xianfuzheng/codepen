@@ -1,0 +1,216 @@
+<canvas id="myCanvas" width="800" onmousemove="mouseMove(event)" onclick="mouseClick(event)" height="480"
+    style="border:2px solid blue">
+
+</canvas>
+<img id="mrMap" style="width:0;height:0;"
+    src="https://raw.githubusercontent.com/xianfuzheng/codepen/master/assets/images/bg_g1.jpg" />
+
+
+<img id="mrsMouse" style="width:0;height:0;"
+    src="https://raw.githubusercontent.com/xianfuzheng/codepen/master/assets/images/red_shrew.png" />
+
+
+<img id="hammer" style="width:0;height:0;"
+    src="https://raw.githubusercontent.com/xianfuzheng/codepen/master/assets/images/freeham.png" />
+
+<img id="heart" style="width:0; height:0;"
+    src="https://raw.githubusercontent.com/xianfuzheng/codepen/master/assets/images/life.png" />
+
+<script>
+    var canvas = document.getElementById("myCanvas");
+    var ctx = myCanvas.getContext("2d");
+
+    var mrMap = document.getElementById("mrMap");
+    var mouse = document.getElementById("mrsMouse");
+
+    var mouseX = 333;
+    var mouseY = 162;
+
+    var hammerX = 0;
+    var hammerY = 0;
+
+
+    // mouse state:
+    // 	hiding - hiding underGround - 2 seconds
+    //		goingUp - animation of going up
+    //		surface - visable - 1 second
+    //		goingDown -animation of going down
+
+    var mouseState = "hiding";
+    var timer = 0;
+    var timer2 = 0;
+    var mouseFrame = 5;
+    var mouseFrame2 = 0;
+
+
+    // hammer state: 
+    // 	stanby - when the hammer is just sitting there		
+    //		hitting - when the hammer is hitting
+    var hammerState = "standby";
+    var hammerFrame = 6;
+
+    // heart state:
+    // 	0 - no heart
+    // 1 - 1 heart
+    // 2 - 2 hearts, from left to right
+    // N - N hearts, from left to right
+    var heartState = 0;
+
+    function mouseMove(event) {
+        hammerX = event.clientX - 50;
+        hammerY = event.clientY - 50;
+    }
+
+
+    function mouseClick(event) {
+        hammerState = "hitting"
+
+        var clickX = event.clientX;
+        var clickY = event.clientY;
+
+        if (clickX > mouseX && clickX < mouseX + 100 &&
+            clickY > mouseY && clickY < mouseY + 90) {
+
+            // check mouse state
+
+            if (mouseState == "goingUp" || mouseState == "goingDown" || mouseState == "surface") {
+                // hit
+                heartState = heartState + 1;
+            }
+
+        }
+    }
+
+
+    function drawScene() {
+
+        if (hammerState == "hitting") {
+
+            hammerFrame = hammerFrame - 1;
+
+            if (hammerFrame < 0) {
+                hammerState = "standby";
+                hammerFrame = 6;
+            }
+
+        }
+
+
+        if (mouseState == "hiding") {
+
+            timer = timer + 1;
+            if (timer > 20) {
+                mouseState = "goingUp"
+            }
+
+        }
+
+        if (mouseState == "goingUp") {
+            mouseFrame = mouseFrame - 1;
+
+            if (mouseFrame < 0) {
+                mouseState = "surface";
+            }
+
+        }
+
+        if (mouseState == "surface") {
+
+            timer2 = timer2 + 1;
+            if (timer2 > 10) {
+                mouseState = "goingDown";
+            }
+        }
+
+        if (mouseState == "goingDown") {
+
+            mouseFrame2 = mouseFrame2 + 1;
+
+            if (mouseFrame2 > 6) {
+                mouseState = "hiding"
+
+                timer = 0;
+                timer2 = 0;
+                mouseFrame = 5;
+                mouseFrame2 = 0;
+
+            }
+
+        }
+
+        ctx.clearRect(0, 0, 800, 500);
+
+        ctx.drawImage(mrMap,
+            0, 0, 800, 480,
+            0, //x
+            0, //y
+            800, //width
+            480 //height
+        );
+
+
+        if (mouseState == "hiding") {
+            // draw the mouse in hiding state
+            // do nothing
+        }
+
+        if (mouseState == "goingUp") {
+
+            ctx.drawImage(mrsMouse,
+                mouseFrame * 45, 0, 45, 60, // rect from original image
+                mouseX, mouseY, 45, 60 // rect in canvas
+            )
+
+        }
+
+        if (mouseState == "surface") {
+            ctx.drawImage(mrsMouse,
+                0, 0, 45, 60, // rect from original image
+                mouseX, mouseY, 45, 60 // rect in canvas
+            )
+
+        }
+
+        if (mouseState == "goingDown") {
+
+
+            ctx.drawImage(mrsMouse,
+                mouseFrame2 * 45, 0, 45, 60, // rect from original image
+                mouseX, mouseY, 45, 60 // rect in canvas
+            )
+
+
+        }
+
+        if (hammerState == "standby") {
+
+            ctx.drawImage(hammer,
+                600, 0, 100, 90,
+                hammerX, hammerY, 100, 90)
+
+        }
+
+        if (hammerState == "hitting") {
+
+            ctx.drawImage(hammer,
+                hammerFrame * 100,
+                0, 100, 90,
+                hammerX, hammerY, 100, 90)
+
+        }
+
+        for (i = 0; i < heartState; i = i + 1) {
+
+            ctx.drawImage(
+                heart,
+                0, 0, 32, 32,
+                i * 32, 0, 32, 32)
+
+        }
+
+
+    }
+
+
+    setInterval(drawScene, 100);
+</script>
