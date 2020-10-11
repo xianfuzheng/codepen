@@ -1,0 +1,126 @@
+<canvas id="myCanvas" width="480" height="720" onclick="mouseClick(event)" style="border:2px solid blue"></canvas>
+<img id="mrMap" style="width:0;height:0;"
+    src="https://raw.githubusercontent.com/xianfuzheng/codepen/master/assets/images/balloon_bg.jpg" />
+<img id="balloon1" style="width:0;height:0;"
+    src="https://raw.githubusercontent.com/xianfuzheng/codepen/master/assets/images/balloons.png" />
+<script language=javascript>
+    function mouseClick(event) {
+        // how to handle click event
+        var x = {
+            ...balloon
+        };
+
+        x.randomMyself();
+        balloonArray.push(x);
+    }
+
+    function getRandomArbitrary(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
+    function getRandomInt(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    var canvas = document.getElementById("myCanvas");
+    var ctx = myCanvas.getContext("2d");
+
+    var mrMap = document.getElementById("mrMap");
+
+    // balloon state:
+    // 	hiding = offscreen forever
+    // 	waiting = for timer to finish theen go up
+    // 	onscreen= flying up to 
+
+    var balloon = {
+        state: 'waiting',
+        timer: 0,
+        x: 0,
+        y: 720,
+        frame: 0,
+        detY: 5,
+
+        randomMyself: function () {
+            this.frame = getRandomInt(0, 8);
+            this.x = getRandomArbitrary(1, 480);
+        },
+
+        updateState: function () {
+            if (this.state == "waiting") {
+                // how and when to get to next state
+                this.timer = this.timer + 1;
+                if (this.timer > 30) {
+                    this.state = "onscreen"
+                }
+            }
+
+            if (this.state == "onscreen") {
+                // how and when to get to next state
+
+                // update balloon's position
+                this.y = this.y - this.detY;
+
+                if (this.y < -100) {
+                    this.state = "hiding";
+                }
+
+            }
+        },
+
+        drawMyself: function () {
+            if (this.state == "waiting") {
+
+
+            }
+
+            if (this.state == "onscreen") {
+
+                // how to draw
+                ctx.drawImage(
+                    balloon1,
+                    70 * this.frame, 0, 70, 100,
+
+                    this.x, //x
+                    this.y, //y
+
+                    70, //width
+                    100, //height
+                );
+
+            }
+
+        }
+
+    };
+
+    var balloonArray = [];
+
+    function drawScene() {
+
+        for (i = 0; i < balloonArray.length; i = i + 1) {
+            var x = balloonArray[i];
+            x.updateState();
+        }
+
+        ctx.clearRect(0, 0, 480, 720);
+
+        ctx.drawImage(mrMap,
+            0, 0, 320, 480,
+            0, //x
+            0, //y
+            480, //width
+            720, //height
+        );
+
+        for (i = 0; i < balloonArray.length; i = i + 1) {
+            var x = balloonArray[i];
+            x.drawMyself();
+            x.randomMyself();
+        }
+
+    }
+
+    setInterval(drawScene, 100);
+</script>

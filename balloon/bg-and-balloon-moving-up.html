@@ -1,0 +1,81 @@
+<canvas id="myCanvas" width="480" height="720" style="border:2px solid blue">
+
+</canvas>
+<img id="mrMap" style="width:0;height:0;"
+    src="https://raw.githubusercontent.com/xianfuzheng/codepen/master/assets/images/balloon_bg.jpg" />
+
+<img id="ballon1" style="width:0;height:0;"
+    src="https://raw.githubusercontent.com/xianfuzheng/codepen/master/assets/images/balloons.png" />
+
+<script>
+    var canvas = document.getElementById("myCanvas");
+    var ctx = myCanvas.getContext("2d");
+
+    var mrMap = document.getElementById("mrMap");
+    
+  // hiding = offscreen forever
+  // waiting = for timer to finish theen go up
+  // onscreen= flying up to 
+  var ballonState ='waiting';
+  var timer = 0;
+  
+  var ballonPosition = {x: 240, y:720};
+  var detY = 5;
+  
+    function drawScene() {
+
+      if( ballonState == "waiting") {
+      	// how and when to get to next state
+        timer = timer + 1;
+        if(timer >  30 ){
+         	ballonState = "onscreen"
+        }
+      }
+      
+      if( ballonState == "onscreen") {
+      	// how and when to get to next state
+        
+        // update balloon's position
+        ballonPosition.y =  ballonPosition.y - detY;
+        
+      	   if(ballonPosition.y < -100) {
+             ballonState = "hiding";
+             
+           }
+        
+      }
+      
+        ctx.clearRect(0, 0, 480, 720);
+
+        ctx.drawImage(mrMap,0, 0, 320, 480, 0, //x
+            0, //y
+            480, //width
+            720, //height
+        );
+                      
+       if (ballonState == "waiting") {
+        	// how to draw
+          // no need to draw!
+      
+        }
+      
+        if (ballonState == "onscreen") {
+        	
+          // how to draw
+            ctx.drawImage(ballon1,
+
+                70, 0, 70, 100,
+
+                   ballonPosition.x, //x
+                   ballonPosition.y, //y
+
+                70, //width
+                100, //height
+            );
+      
+        }
+
+    }
+
+    setInterval(drawScene, 100);
+</script>
